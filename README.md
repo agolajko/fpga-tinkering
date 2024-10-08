@@ -2,7 +2,7 @@
 
 
 ## List of projects
-1. Pulsing LED https://github.com/agolajko/fpga-tinkering/tree/main/led-pulse
+1. [Pulsing LED](/led-pulse)
 2. 
 
 ## Use apio build tools (preferred)
