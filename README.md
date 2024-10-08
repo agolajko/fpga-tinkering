@@ -4,14 +4,23 @@
 ## List of projects
 1. Pulsing LED
 
-## Install build tools
+## Use apio build tools (preferred)
+1. Install apio from `https://apiodoc.readthedocs.io/en/stable/source/installation.html`
+2. Follow steps in `https://apiodoc.readthedocs.io/en/stable/source/quick_start.html#create-a-project`
+
+   - `apio init --icestick`
+   - `apio build`
+   - `apio upload` 
+
+## Manual installation
+### Install build tools
 
 ```
 chmod +x install_ice40_toolchain_mac.sh
 ./install_ice40_toolchain_mac.sh
 ```
 
-## To build and load instructions to the board:
+### To build and load instructions to the board:
 
 1. **Write Verilog Code**
    - Create your design in a `.v` file

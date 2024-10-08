@@ -1,0 +1,12 @@
+/venv
+
+# apio generated files
+*.bin
+*.gtkw
+*.vcd
+*.out
+
+hardware.json
+hardware.out
+.sconsign.dblite
+hardware.asc
