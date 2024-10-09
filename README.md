@@ -3,7 +3,7 @@
 
 ## List of projects
 1. [Pulsing LED](/led-pulse)
-2. 
+2. [LFSR random pulsing LEDs](/lfsr-led/)
 
 ## Use apio build tools (preferred)
 1. Install apio from `https://apiodoc.readthedocs.io/en/stable/source/installation.html`
