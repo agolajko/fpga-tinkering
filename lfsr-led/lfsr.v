@@ -5,9 +5,6 @@ input wire clk,
 output  reg [3:0]   led,
 input wire reset);
 
-// reg [23:0] cnt;
-// always @(posedge clk) cnt <= cnt+1;
-
 // binary for the tick rate
 reg div_clk;
 
@@ -43,7 +40,7 @@ always @(posedge div_clk or posedge rst) begin
 end
 
 // Count up on (divided) clock rising edge or reset on button push
-always @ (posedge clk or posedge rst) begin
+always @ (posedge div_clk or posedge rst) begin
     if (rst == 1'b1) begin
         led <= 4'b1111;
     end else 

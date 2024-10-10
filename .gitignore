@@ -1,10 +1,12 @@
 /venv
+/pll-lfsr-led
 
 # apio generated files
 *.bin
 *.gtkw
 *.vcd
 *.out
+.DS_Store
 
 hardware.json
 hardware.out
