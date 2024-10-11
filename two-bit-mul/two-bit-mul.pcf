@@ -1,0 +1,10 @@
+set_io a[0] 98
+set_io a[1] 97
+
+set_io b[0] 96
+set_io b[1] 95
+
+set_io product[0] 94
+set_io product[1] 93
+set_io product[2] 91
+set_io product[3] 90
