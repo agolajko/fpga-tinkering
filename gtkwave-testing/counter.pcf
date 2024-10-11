@@ -1,0 +1,9 @@
+set_io reset 94
+
+# 4-bit counter output
+set_io count[0] 99
+set_io count[1] 98
+set_io count[2] 97
+set_io count[3] 96
+
+set_io clk 21
