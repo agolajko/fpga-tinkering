@@ -2,6 +2,7 @@
 // Source: https://en.wikipedia.org/wiki/Tiny_Encryption_Algorithm
 
 #include <stdint.h>
+#include <stdio.h>
 
 void encrypt(uint32_t v[2], const uint32_t k[4])
 {
@@ -31,4 +32,18 @@ void decrypt(uint32_t v[2], const uint32_t k[4])
     } /* end cycle */
     v[0] = v0;
     v[1] = v1;
+}
+
+int main()
+{
+    uint32_t v[2] = {0x12345678, 0x9ABCDEF0};                         // Example data to encrypt
+    uint32_t k[4] = {0x11111111, 0x22222222, 0x33333333, 0x44444444}; // Example key
+
+    printf("Before encryption: v[0] = %08X, v[1] = %08X\n", v[0], v[1]);
+    encrypt(v, k);
+    printf("After encryption: v[0] = %08X, v[1] = %08X\n", v[0], v[1]);
+    decrypt(v, k);
+    printf("After decryption: v[0] = %08X, v[1] = %08X\n", v[0], v[1]);
+
+    return 0;
 }
