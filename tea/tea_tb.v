@@ -4,38 +4,47 @@ module tea_tb;
 
     reg clk;
     reg reset;
-    reg start;
-    wire done;
 
-    wire v0_out;
-    wire v1_out;
-    wire [5:0] i;
+    reg encrypt_start;
+    reg decrypt_start;
+
+    reg reset_enc;
+    reg reset_dec;
+
+    wire done_enc;
+    wire done_dec;
+
+    wire v0_out_enc;
+    wire v1_out_enc;
+
+    wire v0_out_dec;
+    wire v1_out_dec;
+
     wire [5:0] bits;
 
-    // encryption inputs
-    // v1: 32-bit input. to be encrypted
-    // input reg [31:0] v1, 
-    // input reg [31:0] v2,
+    reg v0_out_reg_enc;
+    reg v1_out_reg_enc;
 
-    // // key1: 32-bit input. key for encryption
-    // input reg [31:0] key1, 
-    // input reg [31:0] key2,
-    // input reg [31:0] key3,  
-    // input reg [31:0] key4,
-
-    // // encryption outputs
-    // // v1_enc: 32-bit output. encrypted v1
-    // output reg [31:0] v1_enc,
-    // output reg [31:0] v2_enc
-
-    // Instantiate the Unit Under Test (UUT)
-    encrypt uut (
+    // Instantiate the encrypt module
+    encrypt uut_encrypt (
         .clk(clk), 
-        .reset(reset),
-        .start(start),
-        .done(done),
-        .v0_out(v0_out),
-        .v1_out(v1_out),
+        .reset(reset_enc),
+        .start(encrypt_start),
+        .done(done_enc),
+        .v0_out(v0_out_enc),
+        .v1_out(v1_out_enc),
+        .bits(bits) 
+    );
+
+
+    // Instantiate the decrypt module
+    decrypt uut_decrypt (
+        .clk(clk), 
+        .reset(reset_dec),
+        .start(decrypt_start),
+        .done(done_dec),
+        .v0_out(v0_out_dec),
+        .v1_out(v1_out_dec),
         .bits(bits) 
     );
 
@@ -47,17 +56,31 @@ module tea_tb;
     initial begin
         // Initialize Inputs
         clk = 0;
-        reset = 0;
-        start = 0;
+        encrypt_start = 0;
+        decrypt_start = 0;
+        reset_enc = 1;
+        reset_dec = 1;
 
         // Wait 100 ns for global reset to finish
         #100;
         
         // Apply reset
-        reset = 1;
+        reset_enc = 1;
         #20;
-        reset = 0;
-        start = 1;
+        reset_enc = 0;
+        encrypt_start = 1;
+
+        // v0_out_reg_enc = v0_out_enc;
+        // v1_out_reg_enc = v1_out_enc;
+        
+        #400;
+
+        // Apply reset
+        encrypt_start = 0;
+        reset_dec = 1;
+        #20;
+        reset_dec = 0;
+        decrypt_start = 1;
 
         // Let it count for a while
         #600;
