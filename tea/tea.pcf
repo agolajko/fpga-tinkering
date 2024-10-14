@@ -1,18 +1,16 @@
-set_io v1 112
-set_io v2 113
+set_io clk 21
 
-set_io key1 114
-set_io key2 115
-set_io key3 116
-set_io key4 117
-
-set_io v1_enc 118
-set_io v2_enc 119
-
-set_io v1_out 44
-set_io v2_out 45
+set_io v0_out 44
+set_io v1_out 45
 
 set_io reset 47
 set_io start 48
 
-set_io clk 21
+set_io done 112
+
+set_io bits[0] 113
+set_io bits[1] 114
+set_io bits[2] 115
+set_io bits[3] 116
+set_io bits[4] 117
+set_io bits[5] 118

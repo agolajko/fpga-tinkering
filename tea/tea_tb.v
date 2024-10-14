@@ -4,35 +4,39 @@ module tea_tb;
 
     reg clk;
     reg reset;
+    reg start;
+    wire done;
+
+    wire v0_out;
+    wire v1_out;
+    wire [5:0] i;
+    wire [5:0] bits;
 
     // encryption inputs
     // v1: 32-bit input. to be encrypted
-    input reg [31:0] v1, 
-    input reg [31:0] v2,
+    // input reg [31:0] v1, 
+    // input reg [31:0] v2,
 
-    // key1: 32-bit input. key for encryption
-    input reg [31:0] key1, 
-    input reg [31:0] key2,
-    input reg [31:0] key3,  
-    input reg [31:0] key4,
+    // // key1: 32-bit input. key for encryption
+    // input reg [31:0] key1, 
+    // input reg [31:0] key2,
+    // input reg [31:0] key3,  
+    // input reg [31:0] key4,
 
-    // encryption outputs
-    // v1_enc: 32-bit output. encrypted v1
-    output reg [31:0] v1_enc,
-    output reg [31:0] v2_enc
+    // // encryption outputs
+    // // v1_enc: 32-bit output. encrypted v1
+    // output reg [31:0] v1_enc,
+    // output reg [31:0] v2_enc
 
     // Instantiate the Unit Under Test (UUT)
     encrypt uut (
         .clk(clk), 
         .reset(reset),
-        .v1(v1),
-        .v2(v2),
-        .key1(key1),
-        .key2(key2),
-        .key3(key3),
-        .key4(key4),
-        .v1_enc(v1_enc),
-        .v2_enc(v2_enc) 
+        .start(start),
+        .done(done),
+        .v0_out(v0_out),
+        .v1_out(v1_out),
+        .bits(bits) 
     );
 
     // Clock generation
@@ -44,13 +48,7 @@ module tea_tb;
         // Initialize Inputs
         clk = 0;
         reset = 0;
-        v1 = 32'h12345678;
-        v2 = 32'h9ABCDEF0;
-        key1 = 32'h11111111;
-        key2 = 32'h22222222;
-        key3 = 32'h33333333;
-        key4 = 32'h44444444;
-        
+        start = 0;
 
         // Wait 100 ns for global reset to finish
         #100;
@@ -59,17 +57,10 @@ module tea_tb;
         reset = 1;
         #20;
         reset = 0;
+        start = 1;
 
         // Let it count for a while
-        #200;
-
-        // Apply reset again
-        reset = 1;
-        #20;
-        reset = 0;
-
-        // Let it count some more
-        #200;
+        #600;
 
         // Finish the simulation
         $finish;
