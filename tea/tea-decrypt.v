@@ -2,13 +2,12 @@ module decrypt(
 
     input wire clk,
     input wire reset,
-    input wire start,
+    input wire run,
 
     // encryption outputs
     output reg v0_out,
     output reg v1_out,
-    output reg done,
-    output reg [5:0] bits
+    output reg done
 
 );
 
@@ -37,13 +36,11 @@ always @(posedge clk or posedge reset) begin
         v1_dec <= v1;
         sum <= 32'hC6EF3720;
         i<=0;
-        bits <= 6'b000000;
     
-    end else if (start) begin
+    end else if (run) begin
 
         if (i <32) begin
             i<=i+1;
-            bits <= bits + 1;
 
             // need blocking assignment
             // to ensure update interdependencies

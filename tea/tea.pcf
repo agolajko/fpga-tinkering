@@ -1,16 +1,15 @@
 set_io clk 21
 
-set_io v0_out 44
-set_io v1_out 45
+set_io run_enc 44
+set_io run_dec 45
 
-set_io reset 47
-set_io start 48
+set_io reset_enc 47
+set_io reset_dec 48
 
-set_io done 112
+set_io done_enc 112
+set_io done_dec 113
 
-set_io bits[0] 113
-set_io bits[1] 114
-set_io bits[2] 115
-set_io bits[3] 116
-set_io bits[4] 117
-set_io bits[5] 118
+set_io v0_out_enc 114
+set_io v1_out_enc 115
+set_io v0_out_dec 116
+set_io v1_out_dec 117

@@ -1,12 +1,11 @@
 `timescale 1ns/1ps
 
-module tea_tb;
+module tea_tb_new;
 
     reg clk;
-    reg reset;
 
-    reg encrypt_start;
-    reg decrypt_start;
+    reg run_enc;
+    reg run_dec;
 
     reg reset_enc;
     reg reset_dec;
@@ -22,31 +21,20 @@ module tea_tb;
 
     wire [5:0] bits;
 
-    reg v0_out_reg_enc;
-    reg v1_out_reg_enc;
+  tea uut (
+    .clk(clk),
+    .run_enc(run_enc),
+    .run_dec(run_dec),
+    .reset_enc(reset_enc),
+    .reset_dec(reset_dec),
+    .done_enc(done_enc),
+    .done_dec(done_dec),
+    .v0_out_enc(v0_out_enc),
+    .v1_out_enc(v1_out_enc),
+    .v0_out_dec(v0_out_dec),
+    .v1_out_dec(v1_out_dec)
+  );
 
-    // Instantiate the encrypt module
-    encrypt uut_encrypt (
-        .clk(clk), 
-        .reset(reset_enc),
-        .start(encrypt_start),
-        .done(done_enc),
-        .v0_out(v0_out_enc),
-        .v1_out(v1_out_enc),
-        .bits(bits) 
-    );
-
-
-    // Instantiate the decrypt module
-    decrypt uut_decrypt (
-        .clk(clk), 
-        .reset(reset_dec),
-        .start(decrypt_start),
-        .done(done_dec),
-        .v0_out(v0_out_dec),
-        .v1_out(v1_out_dec),
-        .bits(bits) 
-    );
 
     // Clock generation
     always begin
@@ -56,8 +44,8 @@ module tea_tb;
     initial begin
         // Initialize Inputs
         clk = 0;
-        encrypt_start = 0;
-        decrypt_start = 0;
+        run_enc = 0;
+        run_dec = 0;
         reset_enc = 1;
         reset_dec = 1;
 
@@ -68,19 +56,17 @@ module tea_tb;
         reset_enc = 1;
         #20;
         reset_enc = 0;
-        encrypt_start = 1;
+        run_enc = 1;
 
-        // v0_out_reg_enc = v0_out_enc;
-        // v1_out_reg_enc = v1_out_enc;
         
         #400;
 
         // Apply reset
-        encrypt_start = 0;
+        run_enc = 0;
         reset_dec = 1;
         #20;
         reset_dec = 0;
-        decrypt_start = 1;
+        run_dec = 1;
 
         // Let it count for a while
         #600;
@@ -92,7 +78,7 @@ module tea_tb;
     // Optional: Generate VCD file for waveform viewing
     initial begin
         $dumpfile("tea_tb.vcd");
-        $dumpvars(0, tea_tb);
+        $dumpvars(0, tea_tb_new);
     end
 
 endmodule
