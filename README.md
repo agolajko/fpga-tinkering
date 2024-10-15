@@ -4,6 +4,9 @@
 ## List of projects
 1. [Pulsing LED](/led-pulse)
 2. [LFSR random pulsing LEDs](/lfsr-led/)
+3. [GTKWave testing](/gtkwave-testing/)
+4. [Two integer binary multiplicatio](/two-bit-mul/)
+5. [Tiny Encryption Algorithm](/tea/)
 
 ## Use apio build tools (preferred)
 1. Install apio from `https://apiodoc.readthedocs.io/en/stable/source/installation.html`
