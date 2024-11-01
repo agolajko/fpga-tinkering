@@ -1,0 +1,1 @@
+# Sending and receiving UART between the Icestick and Elegoo Uno R3
