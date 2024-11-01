@@ -9,8 +9,8 @@
 .DS_Store
 *_sim
 
-
 hardware.json
 hardware.out
 .sconsign.dblite
 hardware.asc
+build
