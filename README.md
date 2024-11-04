@@ -7,6 +7,7 @@
 3. [GTKWave testing](/gtkwave-testing/)
 4. [Two integer binary multiplicatio](/two-bit-mul/)
 5. [Tiny Encryption Algorithm](/tea/)
+6. [UART connection between Icestick and Arduino](/icestick-arduino-uart/)
 
 ## Use apio build tools (preferred)
 1. Install apio from `https://apiodoc.readthedocs.io/en/stable/source/installation.html`
