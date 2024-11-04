@@ -15,7 +15,7 @@
  *
  */
 
-`include "cores/osdvu/uart.v"
+`include "core/uart.v"
 
 module top(
 	input iCE_CLK,
@@ -27,8 +27,7 @@ module top(
 	output LED3,
 	output LED4,
     output PIO1_02,     // New output pin
-    output PIO1_03,
-
+	input PIO1_03       // New input pin
 	);
 
 	wire reset = 0;
@@ -49,9 +48,8 @@ module top(
 	uart0(
 		.clk(iCE_CLK),                    // The master clock for this module
 		.rst(reset),                      // Synchronous reset
-		.rx(RS232_Rx_TTL),                // Incoming serial line
-		// .tx(RS232_Tx_TTL),                // Outgoing serial line
-		.tx(PIO1_03),                // Outgoing serial line
+		.rx(PIO1_03),                // Incoming serial line
+		.tx(PIO1_02),                // Outgoing serial line
 		.transmit(transmit),              // Signal to transmit
 		.tx_byte(tx_byte),                // Byte to transmit
 		.received(received),              // Indicated that a byte has been received
@@ -62,32 +60,20 @@ module top(
 	);
 
 
-reg [24:0] counter = 0;  // Big enough counter to create visible delay
-
-
-// assign LED0 = tx_byte; 
-assign RS232_Tx_TTL = PIO1_03 ;  // Connect UART output to Pmod pin
-assign LED0 = is_transmitting;
-assign LED1 = is_transmitting;
-assign LED2 = is_transmitting;
+assign RS232_Tx_TTL = PIO1_02 ;  // Connect UART output to Pmod pin
+assign LED0 = is_receiving;
 assign LED3 = is_transmitting;
 
+	always @(posedge iCE_CLK) begin
+	   counter <= counter + 1;
 
-always @(posedge iCE_CLK) begin
-    counter <= counter + 1;
-    
-    if (counter == 0) begin  // Only transmit when counter rolls over
-        tx_byte <= 8'b01010101;  // 0x55 = 'U'
-        transmit <= 1;
-
+		if (received) begin
+			tx_byte <= rx_byte;
+			transmit <= 1;
+		end else begin
+			transmit <= 0;
+		end
 	end
-
-
-     else begin
-        transmit <= 0;  // Need to drop transmit signal between sends
-
-    end
-end
 
 
 endmodule

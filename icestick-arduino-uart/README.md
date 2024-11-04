@@ -5,10 +5,9 @@
 
 1. Install [Arduino CLI](https://arduino.github.io/arduino-cli/1.0/installation/) with brew
 2. Plug in board and find it: `arduino-cli board list`
-3. 
-4. Compile and upload the Arduino Code
+3. Compile and upload the Arduino Code
    ```
-   arduino-cli compile --fqbn arduino:avr:uno --config-file arduino-cli.yaml --build-path build 
+   arduino-cli compile --fqbn arduino:avr:uno --build-path build 
 
-   arduino-cli upload -p /dev/tty.usbmodem1301 --fqbn arduino:avr:uno --config-file arduino-cli.yaml
+   arduino-cli upload -p /dev/tty.usbmodem1301 --fqbn arduino:avr:uno --input-dir build
    ```

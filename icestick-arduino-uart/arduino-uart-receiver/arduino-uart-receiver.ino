@@ -1,22 +1,26 @@
+
 #include <SoftwareSerial.h>
 
-// Create software serial object on pin 2
-SoftwareSerial mySerial(2, 3); // RX, TX (we won't use TX pin but need to specify it)
+// Create software serial objects
+SoftwareSerial receiveSerial(2, 4); // RX on 2, TX not used but specified
 
 // Constants
-const int LED_PIN = LED_BUILTIN;       // Usually pin 13
-const unsigned long LED_TIMEOUT = 100; // LED stays on for 100ms after receiving data
+const int LED_PIN = LED_BUILTIN;
+const unsigned long LED_TIMEOUT = 100;    // LED stays on for receiving data
+const unsigned long SEND_INTERVAL = 1000; // Send every 1 second
 
 // Variables
 unsigned long lastReceiveTime = 0;
+unsigned long lastSendTime = 0;
+unsigned long messageCount = 0;
 
 void setup()
 {
-  // Initialize hardware serial (USB) for debugging
+  // USB serial for debugging
   Serial.begin(9600);
 
-  // Initialize software serial for receiving data
-  mySerial.begin(9600);
+  // Initialize software serial ports
+  receiveSerial.begin(9600);
 
   // Set up LED pin
   pinMode(LED_PIN, OUTPUT);
@@ -25,14 +29,20 @@ void setup()
 
 void loop()
 {
-  // If data is available from software serial
-  if (mySerial.available())
+  // Send message every SEND_INTERVAL
+  if (millis() - lastSendTime >= SEND_INTERVAL)
   {
-    // Read it and send to USB serial
-    char c = mySerial.read();
-    Serial.write(c);
+    receiveSerial.println("Message #" + String(messageCount++));
+    lastSendTime = millis();
+  }
 
-    // Turn on LED and record the time
+  // Check for received data
+  if (receiveSerial.available())
+  {
+    char c = receiveSerial.read();
+    Serial.write(c); // forward each character to USB Serial
+
+    // Turn on LED and record time
     digitalWrite(LED_PIN, HIGH);
     lastReceiveTime = millis();
   }
