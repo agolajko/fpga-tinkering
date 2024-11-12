@@ -2,7 +2,7 @@
 
 This small project builds a UART module on the Icestick FPGA which receives and then transmits back signals to the Arduino.
 
-The UART module is in `core/uart.v` and is a reproduction of [this cource code](https://github.com/cyrozap/osdvu/blob/276dd06ee5c01fc49e522272ceef088a15af3fe5/uart.v). The core logic is adapted to the Icestick in the `uart_demo.v` file and can be uploaded with `apio`.
+The UART module is in `core/uart.v` and is a reproduction of [this source code](https://github.com/cyrozap/osdvu/blob/276dd06ee5c01fc49e522272ceef088a15af3fe5/uart.v). The core logic is adapted to the Icestick in the `uart_demo.v` file and can be uploaded with `apio`.
 
 Importantly the Pmod connections on the Lattice Icestick are the 'wrong side up' when positioned as in the [user manual (downloads PDF)](http://www.latticesemi.com/view_document?document_id=50701).
 Meaning the top two pins are both 3.3v, the bottom left is Pin 7 (PIO1_06) and the bottom right is Pin 1 (PIO1_02)
