@@ -1,4 +1,4 @@
-# Timing the return trip send from the Arduino to the Icestick
+# Timing the return trip sent from the Arduino to the Icestick
 
 ## Steps
 
