@@ -7,7 +7,7 @@ SoftwareSerial receiveSerial(2, 4); // RX on 2, TX not used but specified
 // Constants
 const int LED_PIN = LED_BUILTIN;
 const unsigned long LED_TIMEOUT = 100;    // LED stays on for receiving data
-const unsigned long SEND_INTERVAL = 1000; // Send every 1 second
+const unsigned long SEND_INTERVAL = 2000; // Send every 1 second
 
 // Variables
 unsigned long lastReceiveTime = 0;

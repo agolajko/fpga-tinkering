@@ -39,7 +39,7 @@ module top(
 	wire is_transmitting;
 	wire recv_error;
 
-	assign LED4 = recv_error;
+	// assign LED4 = recv_error;
 
 	uart #(
 		.baud_rate(9600),                 // The baud rate in kilobits/s
@@ -60,9 +60,10 @@ module top(
 	);
 
 
-assign RS232_Tx_TTL = PIO1_02 ;  // Connect UART output to Pmod pin
+assign RS232_Tx_TTL = received ;  // Connect UART output to Pmod pin
 assign LED0 = is_receiving;
 assign LED3 = is_transmitting;
+assign LED4 = received;
 
 	always @(posedge iCE_CLK) begin
 	   counter <= counter + 1;
