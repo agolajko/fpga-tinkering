@@ -72,7 +72,7 @@ module top(
     reg uart_pc_transmit;
     reg [7:0] uart_pc_byte;
     wire uart_pc_is_transmitting;
-    reg [23:0] uart_send_counter;  // Made wider for slower count
+    reg [15:0] uart_send_counter;  // Made wider for slower count
 
 
     // Add another UART instance for PC communication
@@ -96,23 +96,33 @@ module top(
         if (rst) begin
             uart_send_counter <= 0;
             uart_pc_transmit <= 0;
+            uart_pc_byte <= 0;
         end else begin
+            uart_send_counter <= uart_send_counter + 1;
             uart_pc_transmit <= 0;  // Default state
             
-            if (uart_send_counter == 0) begin
-                uart_pc_byte <= state +"0";
-            //     uart_pc_byte <= (state == IDLE) ? 8'd48 :      // '0'
-            //     (state == SEND_ECHO) ? 8'd49 :  // '1' 
-            //     (state == WAIT_ECHO) ? 8'd50 :  // '2'
-            //     (state == CALCULATE) ? 8'd51 :  // '3'
-            //     (state == REPORT) ? 8'd52 :  // '4'
-            //   8'd88; 
+            if (uart_send_counter[1:0] == 2'b00 && !uart_pc_is_transmitting) begin
+                uart_pc_byte <=  {2'b00, total_cycles[23:18]};
                 uart_pc_transmit <= 1;
+
+            end else if (uart_send_counter[1:0] == 2'b01 && !uart_pc_is_transmitting) begin
+                uart_pc_byte <=  {2'b01, total_cycles[17:12]};
+                uart_pc_transmit <= 1;
+
+            end else if (uart_send_counter[1:0] == 2'b10 && !uart_pc_is_transmitting) begin
+                uart_pc_byte <=  {2'b10, total_cycles[11:6]};
+                uart_pc_transmit <= 1;
+
+            end else if (uart_send_counter[1:0] == 2'b11 && !uart_pc_is_transmitting) begin
+                uart_pc_byte <= {2'b11, total_cycles[5:0]} ;
+                uart_pc_transmit <= 1;
+            
+            end else begin
+                uart_pc_transmit <= 0;  // Set transmit low when not sending
             end
             
-            uart_send_counter <= uart_send_counter + 1;
-            if (uart_send_counter >= CLK_FREQ/1000)  // Send once per second (12M cycles)
-                uart_send_counter <= 0;
+            // if (uart_send_counter >= CLK_FREQ/1000)  // Send once per second (12M cycles)
+            //     uart_send_counter <= 0;
         end
     end
 
@@ -139,6 +149,7 @@ module top(
     wire timeout = (timeout_counter == TIMEOUT_CYCLES);
 
     // Convert cycles to milliseconds
+    reg [31:0] avg_time;
     // wire [31:0] avg_time = (total_cycles / NUM_SAMPLES * 1000) / CLK_FREQ;
 
     localparam STATE1_MAX = 24'h555555;
@@ -221,7 +232,8 @@ module top(
 
                 REPORT: begin
                     // sample_count <= 0;
-                    total_cycles <= 0;
+                    // avg_time <= (total_cycles / NUM_SAMPLES * 1000) / CLK_FREQ;
+                    // total_cycles <= 0;
                     state <= IDLE;
 
                 end
@@ -234,7 +246,7 @@ module top(
     assign LED0 = leds[2];
     assign LED1 = leds[1];
     assign LED2 = leds[0];
-
+    assign LED3 = uart_send_counter[15];
     assign LED4 = rst;
 
 
