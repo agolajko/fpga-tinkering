@@ -38,7 +38,7 @@ module top(
 
     // Parameters
     parameter CLK_FREQ = 12_000_000;  // 12MHz
-    parameter NUM_SAMPLES = 10;       // Number of echo measurements
+    parameter NUM_SAMPLES = 20;       // Number of echo measurements
     parameter TIMEOUT_CYCLES = 360_000; // 30ms timeout (12MHz * 0.03)    
 
     // arduino uart registers
@@ -148,15 +148,10 @@ module top(
     reg [19:0] timeout_counter;
     wire timeout = (timeout_counter == TIMEOUT_CYCLES);
 
-    // Convert cycles to milliseconds
-    reg [31:0] avg_time;
-    // wire [31:0] avg_time = (total_cycles / NUM_SAMPLES * 1000) / CLK_FREQ;
-
     localparam STATE1_MAX = 24'h555555;
     localparam STATE2_MAX = 24'hAAAAAA;
 
     reg [2:0] leds;
-    reg [7:0] debug_byte;
 
     always @(posedge iCE_CLK) begin
 
@@ -182,10 +177,11 @@ module top(
                     leds <= 3'b100;
 
                     // send the signal during a single clock cycle
+                    // simoplify this by just checking if a single reg is at 0
                     if (STATE1_MAX-2 < send_counter && send_counter < STATE1_MAX) begin 
                         if (sample_count < NUM_SAMPLES) begin
 
-                            tx_byte <= 8'h56; // 'V' character
+                            tx_byte <= h56'; // 'V' character
                             transmit <= 1;
                             cycle_count <= 0;
                             timeout_counter <= 0;
@@ -219,7 +215,7 @@ module top(
                         state <= IDLE;
 
                     end else if (timeout) begin
-                        sample_count <= sample_count + 1;
+                        // sample_count <= sample_count + 1;
                         state <= IDLE;
                     end
                 end
@@ -245,7 +241,8 @@ module top(
 
     assign LED0 = leds[2];
     assign LED1 = leds[1];
-    assign LED2 = leds[0];
+    // assign LED2 = leds[0];
+    assign LED2 = timeout;
     assign LED3 = uart_send_counter[15];
     assign LED4 = rst;
 

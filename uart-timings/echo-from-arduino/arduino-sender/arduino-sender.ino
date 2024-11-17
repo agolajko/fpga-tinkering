@@ -1,13 +1,13 @@
 #include <SoftwareSerial.h>
 
-const int NUM_TESTS = 100;          // Number of timing tests to run
-const unsigned long TIMEOUT = 1000; // Timeout in ms to wait for response
+const uint8_t NUM_TESTS = 100;     // Number of timing tests to run
+const unsigned long TIMEOUT = 800; // Timeout in ms to wait for response
 
 // Arrays to store our timing data
 unsigned long sendTimes[NUM_TESTS];    // When each number was sent
 unsigned long receiveTimes[NUM_TESTS]; // When each number was received
 bool validTests[NUM_TESTS];            // Track which tests were successful
-int currentTest = 0;                   // Keep track of which test we're on
+uint8_t currentTest = 0;               // Keep track of which test we're on
 int validTestCount = 0;                // Count of valid tests completed
 
 // Setup software serial
@@ -46,7 +46,7 @@ void loop()
 
         // Send the current test number
         sendTimes[currentTest] = millis();
-        receiveSerial.println(currentTest);
+        receiveSerial.print(7);
 
         // Wait for response with timeout
         unsigned long startWait = millis();
@@ -62,11 +62,11 @@ void loop()
         }
 
         // Read response and record time
-        int received = receiveSerial.parseInt();
+        char received = receiveSerial.read();
         receiveTimes[currentTest] = millis();
 
         // Verify we got the right number back
-        if (received == currentTest)
+        if (received == 55) // ASCII 7
         {
             validTests[currentTest] = true;
             validTestCount++;
@@ -84,7 +84,7 @@ void loop()
             Serial.print("Data mismatch on test ");
             Serial.print(currentTest);
             Serial.print(": Expected ");
-            Serial.print(currentTest);
+            Serial.print("55");
             Serial.print(", Got ");
             Serial.println(received);
         }

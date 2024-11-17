@@ -9,7 +9,7 @@ ser = serial.Serial('/dev/tty.usbserial-1201',
 
 # Constants matching Verilog
 CLK_FREQ = 12_000_000
-NUM_SAMPLES = 10
+NUM_SAMPLES = 20
 
 # Initialize lists
 unordered_list = [0] * 4
