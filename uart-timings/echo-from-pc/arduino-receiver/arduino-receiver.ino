@@ -10,6 +10,7 @@ const unsigned long LED_TIMEOUT = 100; // LED stays on for receiving data
 
 // Variables
 unsigned long lastReceiveTime = 0;
+const unsigned long TIMEOUT = 800;
 
 void setup()
 {
@@ -27,11 +28,34 @@ void setup()
 void loop()
 {
     // Check for received data
-    if (Serial.available())
+    while (Serial.available())
     {
-        char c = Serial.read();
-        // receiveSerial.write(c); // echo back to sender
-        Serial.write(c); // forward each character to USB Serial
+        unsigned long startWait = millis();
+
+        char received_from_pc = Serial.read();
+        receiveSerial.print(received_from_pc); // echo to FPGA
+
+        // unsigned long startWait = millis();
+
+        // wait for response from FPGA
+        // while (!receiveSerial.available())
+        // {
+        //     if (millis() - startWait > 0)
+        //     {
+        //         Serial.print(9);
+
+        //         return;
+        //     }
+        // };
+
+        char received_from_fpga = receiveSerial.read();
+
+        // unsigned long elapsed = millis() - startWait;
+
+        // uint8_t elapsed_int = (uint8_t)elapsed;
+
+        Serial.print(received_from_fpga); // forward each character to USB Serial
+        // Serial.print(received_from_pc); // forward each character to USB Serial
 
         // Turn on LED and record time
         digitalWrite(LED_PIN, HIGH);

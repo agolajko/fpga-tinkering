@@ -38,17 +38,19 @@ for i in range(20):
 ser.close()
 
 print("Done")
-print(return_times)
-print(return_waits)
+# print(return_times)
+# print(return_waits)
 
-net_times = []
+# net_times = []
 
-for k in range(20):
-    if return_times[k] > 0 and return_waits[k] < 9999:
-        net_times.append(return_times[k]*1000 - return_waits[k]*0.1)
+# for k in range(20):
+#     if return_times[k] > 0 and return_waits[k] < 9999:
+#         net_times.append(return_times[k]*1000 - return_waits[k]*0.1)
 
 print("Net times: ")
-print(net_times)
-avg_times = np.mean(net_times)
+# print(net_times)
+ms_times = np.array(return_times)*1000
+print(ms_times)
+avg_times = np.mean(ms_times)
 print("Average time: ")
 print(avg_times)
