@@ -14,20 +14,21 @@ message2 = b''
 return_times = []
 return_waits = []
 
-for i in range(20):
+for i in range(100):
+    ser.send_break(duration=0.25)
 
-    send_time = time.time()
+    send_time = time.perf_counter()
+
     receive_time = 0
-    ser.write(b'7')
-
-    # time.sleep(0.1)
+    ser.write(bytes([55]))
 
     for j in range(100000):
         if ser.in_waiting > 0:
-            receive_time = time.time()
             message = ser.read(1)
-            ser.reset_input_buffer()
+            receive_time = time.perf_counter()
+
             print(f"Received byte: {message, i}")
+
             break
 
         time.sleep(0.00001)
@@ -35,22 +36,24 @@ for i in range(20):
     return_waits.append(j)
     return_times.append(receive_time - send_time)
 
+
+# ser.write(b'11')
+ser.reset_input_buffer()
+
+ser.reset_output_buffer()
+
 ser.close()
 
 print("Done")
-# print(return_times)
-# print(return_waits)
 
-# net_times = []
-
-# for k in range(20):
-#     if return_times[k] > 0 and return_waits[k] < 9999:
-#         net_times.append(return_times[k]*1000 - return_waits[k]*0.1)
 
 print("Net times: ")
 # print(net_times)
 ms_times = np.array(return_times)*1000
-print(ms_times)
-avg_times = np.mean(ms_times)
+mask = (ms_times >= 15) | (ms_times < 0)
+filtered_times = ms_times[~mask]
+
+print(filtered_times)
+avg_times = np.mean(filtered_times)
 print("Average time: ")
 print(avg_times)
